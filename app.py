@@ -45,7 +45,15 @@ def scrape_amazon_product_data(url):
         review_count = soup.select('#acrCustomerReviewText')[0].get_text().split(' ')[0].replace(".", "")
         
         #common_containers = soup.findAll("li", {"class":"s-result-item celwidget "})
+        deal_of_the_day_element = soup.find("div", attrs={"id": "dealBadge_feature_div"})
+        
+       
+        div_data = deal_of_the_day_element.get_text(strip=True) if deal_of_the_day_element else None
 
+        if(div_data==""):
+            isDtod="No"
+        else:
+            isDtod="Yes"
         try:
             soup.select('#availability .a-color-state')[0].get_text().strip()
             stock = 'Out of Stock'
@@ -60,7 +68,8 @@ def scrape_amazon_product_data(url):
              "Mrp":mrp,
             #"Rating":ratings,
             #"asin":common_containers[3],
-            "Reviews":review_count
+            "Reviews":review_count,
+            "is DTOD":isDtod
 
             
         }
